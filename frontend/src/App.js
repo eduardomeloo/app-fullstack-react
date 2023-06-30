@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 function App() {
     const [atualizaTabela, setAtualizaTabela] = useState(false);
     const [usuarioSelecionado, setUsuarioSelecionado] = useState(null);
+    const [usuariosFiltrados, setUsuariosFiltrados] = useState(null);
 
     function handleAtualizaTabela() {
         setAtualizaTabela(!atualizaTabela);
@@ -15,10 +16,10 @@ function App() {
     return (
         <>
             <div className="bg-gray-200">
-                <Cadastro onCadastrado={handleAtualizaTabela} usuarioSelecionado={usuarioSelecionado} setUsuarioSelecionado={setUsuarioSelecionado}/>
+                <Cadastro onCadastrado={handleAtualizaTabela} usuarioSelecionado={usuarioSelecionado} setUsuarioSelecionado={setUsuarioSelecionado} setUsuariosFiltrados={setUsuariosFiltrados}/>
             </div>
             <div className="bg-gray-100">
-                <TabelaUsuarios atualizaTabela={atualizaTabela} onAtualizaTabela={handleAtualizaTabela} setUsuarioSelecionado={setUsuarioSelecionado} />
+                <TabelaUsuarios atualizaTabela={atualizaTabela} onAtualizaTabela={handleAtualizaTabela} setUsuarioSelecionado={setUsuarioSelecionado} usuariosFiltrados={usuariosFiltrados} />
             </div>
             <ToastContainer 
                 position="top-center" // Define a posição do toast como centro superior

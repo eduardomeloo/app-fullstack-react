@@ -3,7 +3,7 @@ import axios from 'axios';
 import { PatternFormat } from 'react-number-format';
 import { toast } from 'react-toastify';
 
-const Cadastro = ({ onCadastrado, usuarioSelecionado, setUsuarioSelecionado }) => {
+const Cadastro = ({ onCadastrado, usuarioSelecionado, setUsuarioSelecionado, setUsuariosFiltrados }) => {
   const [nome, setNome] = useState('');
   const [telefone, setTelefone] = useState('');
   const [email, setEmail] = useState('');
@@ -39,7 +39,8 @@ const Cadastro = ({ onCadastrado, usuarioSelecionado, setUsuarioSelecionado }) =
             toast.error(error.response.data);
         });
     } else {
-      axios.post('http://192.168.100.118:3001/api/usuarios', novoUsuario).then(() => {
+      axios.post('http://192.168.100.118:3001/api/usuarios', novoUsuario)
+      .then(() => {
         onCadastrado();
         limparFormulario();
         toast.success('Usuário cadastrado com sucesso!');
@@ -56,6 +57,12 @@ const Cadastro = ({ onCadastrado, usuarioSelecionado, setUsuarioSelecionado }) =
     setDataNascimento('');
     setUsuarioSelecionado(null);
   }
+
+    function localizar() {
+        const queryParams = { nome, telefone, email, dataNascimento };
+        axios.get('http://192.168.100.118:3001/api/usuarios', { params: queryParams })
+            .then((response) => setUsuariosFiltrados(response.data));
+    }
 
   return (
     <form onSubmit={handleSubmit}>
@@ -144,6 +151,13 @@ const Cadastro = ({ onCadastrado, usuarioSelecionado, setUsuarioSelecionado }) =
             type="submit"
           >
             {usuarioSelecionado ? 'Atualizar Usuário' : 'Cadastrar'}
+          </button>
+          <button
+            onClick={localizar}
+            className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            type="button"
+          >
+            Localizar
           </button>
           {usuarioSelecionado ? (
             <button

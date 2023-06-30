@@ -2,8 +2,14 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-const TabelaUsuarios = ({ atualizaTabela, onAtualizaTabela, setUsuarioSelecionado }) => {
+const TabelaUsuarios = ({ atualizaTabela, onAtualizaTabela, setUsuarioSelecionado, usuariosFiltrados }) => {
     const [usuarios, setUsuarios] = useState([]);
+
+    useEffect(() => {
+        if(usuariosFiltrados) {
+            setUsuarios(usuariosFiltrados);
+        }
+    }, [usuariosFiltrados]);
 
     useEffect(() => {
         axios.get('http://192.168.100.118:3001/api/usuarios')

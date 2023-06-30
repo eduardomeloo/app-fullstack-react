@@ -3,7 +3,7 @@ const router = express.Router();
 const { getConnection, oracledb } = require('../database/oracleConnection');
 const { existsOrError } = require('./validations');
 
-router.get('/usuarios', async (req, res) => {
+router.get('/usuarios', async (req, res) => {  
     let conn;
 
     try {
@@ -16,6 +16,11 @@ router.get('/usuarios', async (req, res) => {
                                 TO_CHAR(p.data_nascimento, 'DD/MM/YYYY') data_nascimento,
                                 TO_CHAR(p.data_cadastro, 'DD/MM/YYYY HH24:MI:SS') data_cadastro
                         from pessoa p
+                        where 1=1
+                        ${req.query.nome ? `and upper(p.nome) like '%${req.query.nome.toUpperCase()}%'` : ''}
+                        ${req.query.telefone ? `and upper(p.telefone) like '%${req.query.telefone.toUpperCase()}%'` : ''}
+                        ${req.query.email ? `and upper(p.email) like '%${req.query.email.toUpperCase()}%'` : ''}
+                        ${req.query.dataNascimento ? `and TO_CHAR(p.data_nascimento, 'DD/MM/YYYY') like '%${req.query.dataNascimento}%'` : ''}
                         order by data_cadastro desc`
 
         const result = await conn.execute(select, [], { outFormat: oracledb.OUT_FORMAT_OBJECT });
