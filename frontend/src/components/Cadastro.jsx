@@ -58,15 +58,9 @@ const Cadastro = ({ onCadastrado, usuarioSelecionado, setUsuarioSelecionado, set
     setUsuarioSelecionado(null);
   }
 
-    function localizar() {
-        const queryParams = { nome, telefone, email, dataNascimento };
-        axios.get('http://192.168.100.118:3001/api/usuarios', { params: queryParams })
-            .then((response) => setUsuariosFiltrados(response.data));
-    }
-
   return (
     <form onSubmit={handleSubmit}>
-      <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2">
+      <div className="bg-white shadow-md rounded px-8 pt-3 pb-8 mb-4 flex flex-col my-2">
         <div className="-mx-3 md:flex mb-6">
           <div className="md:w-full px-3 mb-6 md:mb-0">
             <label
@@ -151,13 +145,6 @@ const Cadastro = ({ onCadastrado, usuarioSelecionado, setUsuarioSelecionado, set
             type="submit"
           >
             {usuarioSelecionado ? 'Atualizar Usuário' : 'Cadastrar'}
-          </button>
-          <button
-            onClick={localizar}
-            className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            type="button"
-          >
-            Localizar
           </button>
           {usuarioSelecionado ? (
             <button

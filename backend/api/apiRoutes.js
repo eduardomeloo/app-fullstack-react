@@ -5,7 +5,7 @@ const { existsOrError } = require('./validations');
 
 router.get('/usuarios', async (req, res) => {  
     let conn;
-
+    
     try {
         conn = await getConnection();
 
@@ -20,7 +20,11 @@ router.get('/usuarios', async (req, res) => {
                         ${req.query.nome ? `and upper(p.nome) like '%${req.query.nome.toUpperCase()}%'` : ''}
                         ${req.query.telefone ? `and upper(p.telefone) like '%${req.query.telefone.toUpperCase()}%'` : ''}
                         ${req.query.email ? `and upper(p.email) like '%${req.query.email.toUpperCase()}%'` : ''}
-                        ${req.query.dataNascimento ? `and TO_CHAR(p.data_nascimento, 'DD/MM/YYYY') like '%${req.query.dataNascimento}%'` : ''}
+                        ${  
+                            req.query.dataInicial && req.query.dataFinal ? 
+                            `and p.data_nascimento between to_date('${req.query.dataInicial}','YYYY/MM/DD') and to_date('${req.query.dataFinal}', 'YYYY/MM/DD')` : 
+                            ''
+                        }
                         order by data_cadastro desc`
 
         const result = await conn.execute(select, [], { outFormat: oracledb.OUT_FORMAT_OBJECT });
